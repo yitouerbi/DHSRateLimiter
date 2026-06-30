@@ -1,0 +1,32 @@
+# DHSRateLimiter 配置
+# ScriptIrc-config-version: 1
+
+# 固定限速：每秒最多允许加载的区块数
+# 设为 -1 表示不限制固定速率
+fixed-rate:
+  chunks-per-second: 20
+
+# TPS 动态调节
+# 当 TPS 低于对应阈值时，将 chunks-per-second 限制为该值
+# 档位按 TPS 从高到低排列
+tps-throttle:
+  # TPS >= 20: 不额外限制（由 fixed-rate 控制）
+  # TPS < 20: 每秒最多 15 个区块
+  # TPS < 18: 每秒最多 10 个区块
+  # TPS < 15: 每秒最多 5 个区块
+  # TPS < 10: 每秒最多 2 个区块
+  thresholds:
+    20: 15
+    18: 10
+    15: 5
+    10: 2
+
+# 延迟队列设置
+queue:
+  # 最大排队区块数，超过此数的新请求直接丢弃
+  max-queue-size: 200
+  # 队列检查间隔（tick），每多少 tick 尝试从队列中放行区块
+  check-interval-ticks: 2
+
+# 调试日志
+debug: false
